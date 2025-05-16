@@ -12,8 +12,10 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const userData = await this.userRepository.create(createUserDto);
+
+    return this.userRepository.save(userData);
   }
 
   findAll() {
