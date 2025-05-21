@@ -4,7 +4,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { config } from 'process';
 import { User } from './user/entities/user.entity';
 import { ClassModule } from './class/class.module';
 
