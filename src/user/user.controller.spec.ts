@@ -13,7 +13,7 @@ describe('UserController', () => {
 
     controller = module.get<UserController>(UserController);
   });
-
+  // Test case to check if the UserController is defined
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
