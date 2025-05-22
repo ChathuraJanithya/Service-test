@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml
 name: Deploy NestJS to EC2
 
 on:
@@ -10,23 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code (for context only)
+      - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Write SSH key to file
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > ./nest_key.pem
+          chmod 600 ./nest_key.pem
 
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
           port: 22
+          key_path: ./nest_key.pem
           script: |
-            # Install Node.js, pnpm, and PM2
+            # Install Node.js, npm, git, pnpm, and PM2
             curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            sudo apt-get update
             sudo apt-get install -y nodejs npm git
             sudo npm install -g pnpm pm2
 
-            # Clone or update the repo
+            # Clone or update your repo
             if [ ! -d "Service-test" ]; then
               git clone https://github.com/ChathuraJanithya/Service-test.git
             else
@@ -35,13 +42,14 @@ jobs:
               cd ..
             fi
 
-            # Navigate into the repo
+            # Build and deploy
             cd Service-test
-
-            # Install dependencies and build
             pnpm install
             pnpm run build
 
-            # Start or restart the app using PM2
+            # Start or restart with PM2
             pm2 start dist/main.js --name service-test || pm2 restart service-test
             pm2 save
+
+      - name: Clean up SSH key
+        run: rm ./nest_key.pem
