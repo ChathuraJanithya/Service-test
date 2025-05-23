@@ -27,16 +27,7 @@ jobs:
           port: 22
           key_path: ./nest_key.pem
           script: |
-            # Install Node.js, npm, git, pnpm, and PM2
-            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-            sudo apt-get update
-            sudo apt-get install -y nodejs npm git
-            sudo npm install -g pnpm pm2
-
-            # Clone or update your repo
-            if [ ! -d "Service-test" ]; then
-              git clone https://github.com/ChathuraJanithya/Service-test.git
-            else
+            #  update your repo
               cd Service-test
               git pull origin main
               cd ..
