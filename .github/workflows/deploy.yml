@@ -27,7 +27,7 @@ jobs:
           port: 22
           key_path: ./nest_key.pem
           script: |
-            #  update your repo
+            # update your repo
               cd Service-test
               git pull origin main
               cd ..
