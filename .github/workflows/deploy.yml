@@ -31,7 +31,7 @@ jobs:
               cd Service-test
               git pull origin main
               cd ..
-            fi
+            
 
             # Build and deploy
             cd Service-test
