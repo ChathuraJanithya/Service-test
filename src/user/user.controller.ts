@@ -18,6 +18,22 @@ export class UserController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {
+      //check if user already exists
+      const existingUser = await this.userService.findAll();
+      if (existingUser.some((user) => user.email === createUserDto.email)) {
+        return {
+          statusCode: 400,
+          message: 'User with this email already exists',
+        };
+      }
+      //create user
+      if (!createUserDto.email || !createUserDto.name) {
+        return {
+          statusCode: 400,
+          message: 'Email and password are required',
+        };
+      }
+
       await this.userService.create(createUserDto);
 
       return {
@@ -28,6 +44,7 @@ export class UserController {
       return {
         statusCode: 500,
         message: 'Internal server error',
+        error: error,
       };
     }
   }

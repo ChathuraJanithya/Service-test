@@ -18,3 +18,12 @@ model User {
   name  String @db.VarChar(50)
   email String @unique @db.VarChar(50)
 }
+
+model Auth {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(50)
+  phoneNumber String @db.VarChar(20)
+  address String @db.VarChar(50)
+  email String @unique @db.VarChar(50)
+  password String @db.VarChar(100)
+}
