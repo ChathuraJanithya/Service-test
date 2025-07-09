@@ -50,7 +50,7 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
-    const token = this.jwtService.sign({ email: user.email });
+    const token = this.jwtService.sign({ id: user.id, email: user.email });
     return { token };
   }
 }
